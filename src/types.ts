@@ -56,7 +56,7 @@ export interface TouristAttraction {
   best_months: string;
   is_published: boolean;
   views_count: number;
-  created_at: string;
+  created_at?: string;
   updated_at?: string;
   avg_rating?: number;
   reviews_count?: number;

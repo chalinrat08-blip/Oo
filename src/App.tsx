@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { TouristAttraction, User, SiteSettings, Season } from "./types";
 import { api, getAuthToken } from "./services/api";
+import { INITIAL_ATTRACTIONS } from "./data/initialAttractions";
 import { Navbar } from "./components/Navbar";
 import { BottomNav } from "./components/BottomNav";
 import { HomeView } from "./components/HomeView";
@@ -17,7 +18,7 @@ import { Footer } from "./components/Footer";
 export default function App() {
   const [currentTab, setCurrentTab] = useState<string>("home");
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [attractions, setAttractions] = useState<TouristAttraction[]>([]);
+  const [attractions, setAttractions] = useState<TouristAttraction[]>(INITIAL_ATTRACTIONS);
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
   const [favoritesList, setFavoritesList] = useState<TouristAttraction[]>([]);
   const [settings, setSettings] = useState<SiteSettings | undefined>(undefined);
@@ -52,8 +53,17 @@ export default function App() {
       }
 
       // 2. Fetch all attractions
-      const attrRes = await api.getAttractions();
-      setAttractions(attrRes.attractions || []);
+      try {
+        const attrRes = await api.getAttractions();
+        if (attrRes && Array.isArray(attrRes.attractions) && attrRes.attractions.length > 0) {
+          setAttractions(attrRes.attractions);
+        } else {
+          setAttractions(INITIAL_ATTRACTIONS);
+        }
+      } catch (err) {
+        console.warn("Could not fetch attractions from API, using bundled fallback:", err);
+        setAttractions(INITIAL_ATTRACTIONS);
+      }
 
       // 3. Fetch user if token exists
       const token = getAuthToken();
