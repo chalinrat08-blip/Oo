@@ -118,7 +118,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-stone-100">
             <button
               onClick={() => onNavigateTab("favorites")}
-              className="p-3 bg-stone-50 hover:bg-rose-50 rounded-xl border border-stone-200/80 transition-colors text-left flex items-center gap-3 group"
+              className="p-3 bg-stone-50 hover:bg-rose-50 rounded-xl border border-stone-200/80 transition-colors text-left flex items-center gap-3 group cursor-pointer"
             >
               <Heart className="w-5 h-5 text-rose-500 group-hover:scale-110 transition-transform" />
               <div>
@@ -129,13 +129,29 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
             <button
               onClick={() => onNavigateTab("planner")}
-              className="p-3 bg-stone-50 hover:bg-emerald-50 rounded-xl border border-stone-200/80 transition-colors text-left flex items-center gap-3 group"
+              className="p-3 bg-stone-50 hover:bg-emerald-50 rounded-xl border border-stone-200/80 transition-colors text-left flex items-center gap-3 group cursor-pointer"
             >
               <Calendar className="w-5 h-5 text-emerald-600 group-hover:scale-110 transition-transform" />
               <div>
                 <p className="text-[11px] text-stone-500">แผนเที่ยวของฉัน</p>
                 <p className="text-base font-bold text-stone-800">{plansCount} ทริป</p>
               </div>
+            </button>
+
+            <button
+              onClick={() => onNavigateTab("admin")}
+              className="col-span-2 p-3 bg-amber-50/80 hover:bg-amber-100/90 rounded-xl border border-amber-200 transition-colors text-left flex items-center justify-between gap-3 cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <Shield className="w-5 h-5 text-amber-700 shrink-0" />
+                <div>
+                  <p className="text-[11px] text-amber-800 font-bold">เข้าสู่ระบบจัดการและแดชบอร์ด</p>
+                  <p className="text-xs text-amber-950">จัดการสถานที่ท่องเที่ยว สถิติ และการตั้งค่าระบบ</p>
+                </div>
+              </div>
+              <span className="text-[11px] font-bold text-amber-900 bg-amber-200/80 px-2.5 py-1 rounded-lg shrink-0">
+                เปิดแดชบอร์ด →
+              </span>
             </button>
           </div>
         </div>

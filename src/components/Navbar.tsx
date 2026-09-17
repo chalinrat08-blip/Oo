@@ -125,20 +125,19 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right Action: Auth & Admin */}
           <div className="flex items-center gap-3">
-            {currentUser?.role === "admin" && (
-              <button
-                id="nav-admin-btn"
-                onClick={() => setCurrentTab("admin")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
-                  currentTab === "admin"
-                    ? "bg-stone-900 text-amber-300 border-stone-900 shadow-xs"
-                    : "bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100"
-                }`}
-              >
-                <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
-                <span>ระบบหลังบ้าน (Admin)</span>
-              </button>
-            )}
+            <button
+              id="nav-admin-btn"
+              onClick={() => setCurrentTab("admin")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all cursor-pointer ${
+                currentTab === "admin"
+                  ? "bg-stone-900 text-amber-300 border-stone-900 shadow-xs"
+                  : "bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100"
+              }`}
+              title="เปิดระบบจัดการหลังบ้านและแดชบอร์ด"
+            >
+              <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
+              <span>แดชบอร์ด (Dashboard)</span>
+            </button>
 
             {currentUser ? (
               <div className="flex items-center gap-2">

@@ -13,6 +13,7 @@ export type Region =
   | 'ภาคใต้';
 
 export type Category = 
+  | 'ธรรมชาติ'
   | 'ทะเล' 
   | 'ภูเขา' 
   | 'น้ำตก' 
@@ -42,6 +43,7 @@ export interface TouristAttraction {
   season: Season;
   category: Category;
   description: string;
+  highlights?: string[];
   activities: string[];
   opening_hours: string;
   entrance_fee: string;

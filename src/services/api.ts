@@ -14,6 +14,7 @@ const FAVORITES_KEY = "thaitravel_favorites";
 const REVIEWS_KEY = "thaitravel_reviews";
 const PLANS_KEY = "thaitravel_plans";
 const CUSTOM_ATTR_KEY = "thaitravel_custom_attractions";
+const DELETED_ATTR_KEY = "thaitravel_deleted_attractions";
 const SETTINGS_KEY = "thaitravel_settings";
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -75,10 +76,20 @@ function getAllLocalAttractions(): TouristAttraction[] {
   try {
     const custom = localStorage.getItem(CUSTOM_ATTR_KEY);
     const customList: TouristAttraction[] = custom ? JSON.parse(custom) : [];
+    const deletedList: string[] = JSON.parse(localStorage.getItem(DELETED_ATTR_KEY) || "[]");
+    
     // merge by id, custom takes precedence
     const map = new Map<string, TouristAttraction>();
-    INITIAL_ATTRACTIONS.forEach((a) => map.set(a.id, a));
-    customList.forEach((a) => map.set(a.id, a));
+    INITIAL_ATTRACTIONS.forEach((a) => {
+      if (!deletedList.includes(a.id)) {
+        map.set(a.id, a);
+      }
+    });
+    customList.forEach((a) => {
+      if (!deletedList.includes(a.id)) {
+        map.set(a.id, a);
+      }
+    });
     return Array.from(map.values());
   } catch {
     return INITIAL_ATTRACTIONS;
@@ -663,6 +674,12 @@ export const api = {
         const custom: TouristAttraction[] = JSON.parse(localStorage.getItem(CUSTOM_ATTR_KEY) || "[]");
         const filtered = custom.filter((c) => c.id !== id);
         localStorage.setItem(CUSTOM_ATTR_KEY, JSON.stringify(filtered));
+
+        const deletedList: string[] = JSON.parse(localStorage.getItem(DELETED_ATTR_KEY) || "[]");
+        if (!deletedList.includes(id)) {
+          deletedList.push(id);
+          localStorage.setItem(DELETED_ATTR_KEY, JSON.stringify(deletedList));
+        }
       } catch {}
       return { message: "ลบสถานที่เรียบร้อยแล้ว" };
     }

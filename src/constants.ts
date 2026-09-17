@@ -57,6 +57,7 @@ export const SEASONS: Record<Season, SeasonInfo> = {
 };
 
 export const CATEGORIES: Category[] = [
+  "ธรรมชาติ",
   "ทะเล",
   "ภูเขา",
   "น้ำตก",
