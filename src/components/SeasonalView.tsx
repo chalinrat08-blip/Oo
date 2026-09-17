@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TouristAttraction, Season } from "../types";
 import { SEASONS, CATEGORIES } from "../constants";
 import { AttractionCard } from "./AttractionCard";
+import { INITIAL_ATTRACTIONS } from "../data/initialAttractions";
 import { Sun, CloudRain, Snowflake, Sparkles, Filter } from "lucide-react";
 
 interface SeasonalViewProps {
@@ -25,8 +26,10 @@ export const SeasonalView: React.FC<SeasonalViewProps> = ({
 
   const seasonInfo = SEASONS[selectedSeason];
 
+  const effectiveAttractions = attractions && attractions.length > 0 ? attractions : INITIAL_ATTRACTIONS;
+
   // Filter places for this season (or 'all' season)
-  let filtered = attractions.filter(
+  let filtered = effectiveAttractions.filter(
     (a) => a.season === selectedSeason || a.season === "all"
   );
 

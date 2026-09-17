@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { TouristAttraction, TravelPlan, User } from "../types";
 import { api } from "../services/api";
+import { INITIAL_ATTRACTIONS } from "../data/initialAttractions";
 
 interface TravelPlannerViewProps {
   currentUser: User | null;
@@ -19,6 +20,7 @@ export const TravelPlannerView: React.FC<TravelPlannerViewProps> = ({
   attractions,
   onSelectAttraction
 }) => {
+  const effectiveAttractions = attractions && attractions.length > 0 ? attractions : INITIAL_ATTRACTIONS;
   const [plans, setPlans] = useState<TravelPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -240,7 +242,7 @@ export const TravelPlannerView: React.FC<TravelPlannerViewProps> = ({
                       className="w-full text-xs p-2.5 rounded-xl border border-stone-200 bg-white"
                     >
                       <option value="">-- เลือกสถานที่ท่องเที่ยว --</option>
-                      {attractions.map((a) => (
+                      {effectiveAttractions.map((a) => (
                         <option key={a.id} value={a.id}>
                           {a.name} ({a.province})
                         </option>
@@ -300,7 +302,7 @@ export const TravelPlannerView: React.FC<TravelPlannerViewProps> = ({
                       ) : (
                         <div className="space-y-1.5">
                           {dayItems.map((item) => {
-                            const attr = attractions.find((a) => a.id === item.attraction_id);
+                            const attr = effectiveAttractions.find((a) => a.id === item.attraction_id);
                             return (
                               <div
                                 key={item.originalIdx}

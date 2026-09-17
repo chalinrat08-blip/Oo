@@ -3,6 +3,7 @@ import { Search, MapPin, X, RotateCcw } from "lucide-react";
 import { TouristAttraction } from "../types";
 import { SEASONS, CATEGORIES, REGIONS, POPULAR_PROVINCES } from "../constants";
 import { AttractionCard } from "./AttractionCard";
+import { INITIAL_ATTRACTIONS } from "../data/initialAttractions";
 
 interface SearchViewProps {
   attractions: TouristAttraction[];
@@ -30,13 +31,15 @@ export const SearchView: React.FC<SearchViewProps> = ({
   const [selectedProvince, setSelectedProvince] = useState<string>(initialProvince);
   const [sortBy, setSortBy] = useState<"popular" | "rating" | "name">("popular");
 
+  const effectiveAttractions = attractions && attractions.length > 0 ? attractions : INITIAL_ATTRACTIONS;
+
   // Get distinct list of provinces from attractions
   const allProvinces = useMemo(() => {
-    const list = Array.from(new Set(attractions.map((a) => a.province))).sort((a: string, b: string) =>
+    const list = Array.from(new Set(effectiveAttractions.map((a) => a.province))).sort((a: string, b: string) =>
       a.localeCompare(b, "th")
     );
     return list;
-  }, [attractions]);
+  }, [effectiveAttractions]);
 
   // Reset all filters
   const handleResetFilters = () => {
@@ -50,7 +53,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
 
   // Filter logic
   const filteredAttractions = useMemo(() => {
-    return attractions.filter((a) => {
+    return effectiveAttractions.filter((a) => {
       // Search term
       if (searchTerm.trim()) {
         const q = searchTerm.toLowerCase().trim();

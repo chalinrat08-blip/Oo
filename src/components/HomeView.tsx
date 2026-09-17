@@ -7,6 +7,7 @@ import {
 import { TouristAttraction, Season, SiteSettings } from "../types";
 import { SEASONS, POPULAR_PROVINCES } from "../constants";
 import { AttractionCard } from "./AttractionCard";
+import { INITIAL_ATTRACTIONS } from "../data/initialAttractions";
 
 interface HomeViewProps {
   attractions: TouristAttraction[];
@@ -41,8 +42,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
     }
   };
 
+  // Ensure attractions is never empty by falling back to bundled dataset
+  const effectiveAttractions = attractions && attractions.length > 0 ? attractions : INITIAL_ATTRACTIONS;
+
   // Filter featured attractions based on tab
-  const displayedFeatured = attractions
+  const displayedFeatured = effectiveAttractions
     .filter((a) => (featuredSeasonTab === "all" ? true : a.season === featuredSeasonTab || a.season === "all"))
     .slice(0, 8);
 
@@ -299,24 +303,36 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
 
         {/* Attractions Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {displayedFeatured.map((attraction) => (
-            <AttractionCard
-              key={attraction.id}
-              attraction={attraction}
-              onSelect={onSelectAttraction}
-              onToggleFavorite={onToggleFavorite}
-              isFavorite={favoriteIds.has(attraction.id)}
-            />
-          ))}
-        </div>
+        {displayedFeatured.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {displayedFeatured.map((attraction) => (
+              <AttractionCard
+                key={attraction.id}
+                attraction={attraction}
+                onSelect={onSelectAttraction}
+                onToggleFavorite={onToggleFavorite}
+                isFavorite={favoriteIds.has(attraction.id)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-stone-100/70 rounded-2xl p-6 border border-stone-200">
+            <p className="text-stone-600 text-sm font-medium">ไม่พบสถานที่ท่องเที่ยวในตัวเลือกนี้</p>
+            <button
+              onClick={() => setFeaturedSeasonTab("all")}
+              className="mt-3 px-4 py-2 bg-emerald-700 text-white rounded-lg text-xs font-bold hover:bg-emerald-800 transition-colors"
+            >
+              ดูสถานที่ท่องเที่ยวทั้งหมด
+            </button>
+          </div>
+        )}
 
         <div className="text-center pt-4">
           <button
             onClick={() => onNavigateToSearch()}
             className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900 hover:bg-black text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all"
           >
-            <span>ดูสถานที่ท่องเที่ยวทั้งหมด ({attractions.length} แห่ง)</span>
+            <span>ดูสถานที่ท่องเที่ยวทั้งหมด ({effectiveAttractions.length} แห่ง)</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
