@@ -1,0 +1,6 @@
+{
+  "name": "เที่ยวไทยตามฤดู",
+  "description": "เว็บไซต์แนะนำสถานที่ท่องเที่ยวในประเทศไทยตามฤดูกาล ค้นหาที่เที่ยวตามฤดูร้อน ฤดูฝน ฤดูหนาว พร้อมระบบวางแผนเที่ยวและรีวิว",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
